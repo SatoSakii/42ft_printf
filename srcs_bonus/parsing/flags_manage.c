@@ -6,7 +6,7 @@
 /*   By: albernar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:53:30 by albernar          #+#    #+#             */
-/*   Updated: 2024/12/06 22:00:32 by albernar         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:36:11 by albernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ static void	handle_di_flag(char **str, t_flags flags, int *total_len, int *sign)
 		*sign = 1;
 	if (**str == '-')
 	{
-		*total_len += ft_putchar_fd('-', 1);
+		*total_len += ft_putchar_fd('-', flags.fd);
 		(*str)++;
 	}
 	else if (flags.plus)
-		*total_len += ft_putchar_fd('+', 1);
+		*total_len += ft_putchar_fd('+', flags.fd);
 	else if (flags.space)
-		*total_len += ft_putchar_fd(' ', 1);
+		*total_len += ft_putchar_fd(' ', flags.fd);
 }
 
 int	handle_sign_and_prefix(char **str, t_flags flags, int *total_len)
@@ -64,17 +64,17 @@ int	handle_sign_and_prefix(char **str, t_flags flags, int *total_len)
 	if (flags.current_flag == 'd' || flags.current_flag == 'i')
 		handle_di_flag(str, flags, total_len, &sign);
 	else if (flags.current_flag == 'p')
-		*total_len += ft_putstr_fd("0x", 1);
+		*total_len += ft_putstr_fd("0x", flags.fd);
 	else if ((flags.current_flag == 'x' || flags.current_flag == 'X')
 		&& flags.hash && **str != '0')
 	{
 		if (flags.current_flag == 'x')
-			*total_len += ft_putstr_fd("0x", 1);
+			*total_len += ft_putstr_fd("0x", flags.fd);
 		else
-			*total_len += ft_putstr_fd("0X", 1);
+			*total_len += ft_putstr_fd("0X", flags.fd);
 	}
 	else if (flags.current_flag == 'o' && flags.hash && **str != '0')
-		*total_len += ft_putchar_fd('0', 1);
+		*total_len += ft_putchar_fd('0', flags.fd);
 	return (sign);
 }
 
@@ -93,19 +93,19 @@ int	handle_output(char *str, t_flags flags)
 
 	len = 0;
 	if (flags.current_flag == 'c')
-		len += ft_putchar_fd(*str, 1);
+		len += ft_putchar_fd(*str, flags.fd);
 	else if (flags.current_flag == 's')
 	{
 		if (flags.has_precision)
-			len += ft_putnstr_fd(str, flags.precision, 1);
+			len += ft_putnstr_fd(str, flags.precision, flags.fd);
 		else
-			len += ft_putstr_fd(str, 1);
+			len += ft_putstr_fd(str, flags.fd);
 	}
 	else if (flags.current_flag == 'p')
-		len += ft_putstr_fd(str, 1);
+		len += ft_putstr_fd(str, flags.fd);
 	else if (flags.current_flag == 'd' || flags.current_flag == 'i'
 		|| flags.current_flag == 'u' || flags.current_flag == 'x'
 		|| flags.current_flag == 'X' || flags.current_flag == 'o')
-		len += ft_putstr_fd(str, 1);
+		len += ft_putstr_fd(str, flags.fd);
 	return (len);
 }

@@ -6,7 +6,7 @@
 /*   By: albernar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:14:43 by albernar          #+#    #+#             */
-/*   Updated: 2024/12/06 22:21:00 by albernar         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:34:50 by albernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	handle_conversion(char percent, va_list args, t_flags flags,
 	else if (percent == 'o')
 		handle_oct(va_arg(args, unsigned int), percent, flags, total_len);
 	else if (percent == '%')
-		*total_len += ft_putchar_fd('%', 1);
+		*total_len += ft_putchar_fd('%', flags.fd);
 }
 
 int	ft_dprintf(int fd, const char *format, va_list args)
@@ -49,7 +49,7 @@ int	ft_dprintf(int fd, const char *format, va_list args)
 			handle_conversion(*format, args, flags, &total_len);
 		}
 		else
-			total_len += ft_putchar_fd(*format, 1);
+			total_len += ft_putchar_fd(*format, flags.fd);
 		format++;
 	}
 	return (total_len);

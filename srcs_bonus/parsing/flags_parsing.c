@@ -6,7 +6,7 @@
 /*   By: albernar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 20:51:36 by albernar          #+#    #+#             */
-/*   Updated: 2024/12/06 21:51:33 by albernar         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:35:33 by albernar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,14 +101,14 @@ void	apply_flags(char *str, t_flags flags, int *total_len)
 	precision_zeros = calculate_precision_zeros(flags, size);
 	padding_size = calculate_padding_size(flags, size + precision_zeros, str);
 	if (!flags.left_align && (!flags.zero_pad || flags.has_precision))
-		*total_len += ft_putnchar_fd(' ', padding_size, 1);
+		*total_len += ft_putnchar_fd(' ', padding_size, flags.fd);
 	if (*str == '-' || flags.plus || flags.space || flags.hash)
 		handle_sign_and_prefix(&str, flags, total_len);
 	if (flags.zero_pad && !flags.left_align && !flags.has_precision)
-		*total_len += ft_putnchar_fd('0', padding_size, 1);
+		*total_len += ft_putnchar_fd('0', padding_size, flags.fd);
 	if (flags.has_precision)
-		*total_len += ft_putnchar_fd('0', precision_zeros, 1);
+		*total_len += ft_putnchar_fd('0', precision_zeros, flags.fd);
 	*total_len += handle_output(str, flags);
 	if (flags.left_align)
-		*total_len += ft_putnchar_fd(' ', padding_size, 1);
+		*total_len += ft_putnchar_fd(' ', padding_size, flags.fd);
 }
